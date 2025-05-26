@@ -1,16 +1,13 @@
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
-  FormControlLabel,
   Grid,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,7 +31,6 @@ const registerSchema = yup.object().shape({
 });
 
 const Register = () => {
-  const navigate = useNavigate();
   const { isUserRegistered, addUser } = UseAuth();
   const {
     register,

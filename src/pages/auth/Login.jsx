@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import UseAuth from "./hooks/UseAuth";
 
@@ -24,7 +24,6 @@ const loginSchema = yup.object().shape({
 const Login = () => {
   const { loginUser } = UseAuth();
 
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
