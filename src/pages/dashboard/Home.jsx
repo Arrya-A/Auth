@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,7 +11,7 @@ import {
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import useFetch from "./hooks/useFetch";
-
+import { Icon } from "@iconify/react";
 const Home = () => {
   const location = useLocation();
   const username = location.state?.username;
@@ -26,6 +27,10 @@ const Home = () => {
         }}
       >
         <Typography variant="h6">Welcome {username}</Typography>
+      </Box>
+
+      <Box>
+        <Button variant="contained" color="success" sx={{float:"right"}} startIcon={<Icon icon="line-md:plus" />}>Add User</Button>
       </Box>
       <Box>
         <TableContainer>
