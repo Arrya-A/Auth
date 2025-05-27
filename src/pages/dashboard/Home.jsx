@@ -11,12 +11,31 @@ import {
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import useFetch from "./hooks/useFetch";
-import { Icon } from "@iconify/react";
+import AddUser from "../../components/AddUser";
+import { useEffect, useState } from "react";
+
 const Home = () => {
+  const [users, setUsers] = useState([]);
   const location = useLocation();
   const username = location.state?.username;
-  const { users } = useFetch("https://jsonplaceholder.typicode.com/users");
+  const { users: fetchedUsers } = useFetch(
+    "https://jsonplaceholder.typicode.com/users"
+  );
   console.log(users);
+
+  useEffect(() => {
+    if (fetchedUsers.length) {
+      setUsers(fetchedUsers);
+    }
+  }, [fetchedUsers]);
+
+  const handleAddUser = (newUser) => {
+    setUsers((user) => [...user, newUser]);
+  };
+
+  const handleDelete = (id) => {
+    setUsers((user) => user.filter((user) => user.id !== id));
+  };
 
   return (
     <>
@@ -29,9 +48,7 @@ const Home = () => {
         <Typography variant="h6">Welcome {username}</Typography>
       </Box>
 
-      <Box>
-        <Button variant="contained" color="success" sx={{float:"right"}} startIcon={<Icon icon="line-md:plus" />}>Add User</Button>
-      </Box>
+      <AddUser onAddUser={handleAddUser} />
       <Box>
         <TableContainer>
           <Table>
@@ -43,18 +60,28 @@ const Home = () => {
                 <TableCell>Address</TableCell>
                 <TableCell>Phone</TableCell>
                 <TableCell>Company</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {users.length > 0 &&
-                users.map((user) => (
+                users.map((user,index) => (
                   <TableRow key={user.id}>
-                    <TableCell>{user.id}</TableCell>
+                    <TableCell>{index+1}</TableCell>
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.address?.city}</TableCell>
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>{user.company?.name}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() => handleDelete(user.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
