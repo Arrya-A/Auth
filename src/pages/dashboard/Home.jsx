@@ -12,10 +12,12 @@ import {
 import { useLocation } from "react-router-dom";
 import useFetch from "./hooks/useFetch";
 import AddUser from "../../components/AddUser";
+import EditUser from "../../components/EditUser";
 import { useEffect, useState } from "react";
 
 const Home = () => {
   const [users, setUsers] = useState([]);
+
   const location = useLocation();
   const username = location.state?.username;
   const { users: fetchedUsers } = useFetch(
@@ -32,6 +34,17 @@ const Home = () => {
   const handleAddUser = (newUser) => {
     setUsers((user) => [...user, newUser]);
   };
+
+  
+  const handleUpdateUser = (updatedUser) => {
+    // console.log('test');
+    
+    setUsers((prevUsers) =>
+    prevUsers.map((user) =>
+      user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+    )
+  );
+};
 
   const handleDelete = (id) => {
     setUsers((user) => user.filter((user) => user.id !== id));
@@ -74,6 +87,14 @@ const Home = () => {
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>{user.company?.name}</TableCell>
                     <TableCell>
+                      {/* <Button
+                        variant="outlined"
+                        color="warning"
+                        onClick={() => handleEdit(user)}
+                      >
+                        Edit
+                      </Button> */}
+                      <EditUser userData={user} onEditUser={handleUpdateUser} />
                       <Button
                         variant="outlined"
                         color="error"
