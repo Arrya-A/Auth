@@ -20,34 +20,35 @@ const Home = () => {
 
   const location = useLocation();
   const username = location.state?.username;
-  const { users: fetchedUsers } = useFetch(
+  const { users: fetchedUsers, fetchUsers } = useFetch(
     "https://jsonplaceholder.typicode.com/users"
   );
+
   console.log(users);
 
-  useEffect(() => {
-    if (fetchedUsers.length) {
-      setUsers(fetchedUsers);
-    }
-  }, [fetchedUsers]);
+  // useEffect(() => {
+  //   if (fetchedUsers.length) {
+  //     setUsers(fetchedUsers);
+  //   }
+  // }, [fetchedUsers]);
 
   const handleAddUser = (newUser) => {
     setUsers((user) => [...user, newUser]);
   };
 
-  
   const handleUpdateUser = (updatedUser) => {
     // console.log('test');
-    
+
     setUsers((prevUsers) =>
-    prevUsers.map((user) =>
-      user.id === updatedUser.id ? { ...user, ...updatedUser } : user
-    )
-  );
-};
+      prevUsers.map((user) =>
+        user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+      )
+    );
+  };
 
   const handleDelete = (id) => {
     setUsers((user) => user.filter((user) => user.id !== id));
+    fetchUsers();
   };
 
   return (
@@ -78,9 +79,9 @@ const Home = () => {
             </TableHead>
             <TableBody>
               {users.length > 0 &&
-                users.map((user,index) => (
+                users.map((user, index) => (
                   <TableRow key={user.id}>
-                    <TableCell>{index+1}</TableCell>
+                    <TableCell>{index + 1}</TableCell>
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.address?.city}</TableCell>

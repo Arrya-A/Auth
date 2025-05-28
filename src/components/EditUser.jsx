@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
+import axiosInstance from "../utils/axiosInstance";
 
 const userSchema = yup.object().shape({
   name: yup.string().required("Username is required"),
@@ -18,10 +19,10 @@ const userSchema = yup.object().shape({
   }),
 });
 
-const EditUser = ({ onEditUser, userData}) => {
-    const [openEdit, setOpenEdit] = useState(false)
+const EditUser = ({ onEditUser, userData }) => {
+  const [openEdit, setOpenEdit] = useState(false);
 
-      const handleClickOpen = () => {
+  const handleClickOpen = () => {
     // console.log("Button clicked");
 
     setOpenEdit(true);
@@ -59,32 +60,19 @@ const EditUser = ({ onEditUser, userData}) => {
     };
 
     try {
-      await axios.put(
-        `https://jsonplaceholder.typicode.com/users/${userData.id}`,
-        updatedUser
-      );
+      await axiosInstance.put(`users/${userData.id}`, updatedUser);
       onEditUser(updatedUser);
-      handleClose()
-      reset(updatedUser)
+      handleClose();
+      reset(updatedUser);
     } catch (error) {
       console.log(error);
     }
-  }
-
-
-  
-
+  };
 
   return (
     <>
       <Box>
-        <Button
-          variant="contained"
-          color="warning"
-          
-          
-          onClick={handleClickOpen}
-        >
+        <Button variant="contained" color="warning" onClick={handleClickOpen}>
           Edit
         </Button>
       </Box>

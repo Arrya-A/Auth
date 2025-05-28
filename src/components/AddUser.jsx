@@ -1,15 +1,11 @@
-import {
-  Box,
-  Button,
-} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
-
 import ShowAddModal from "../pages/dashboard/dialog";
+import axiosInstance from "../utils/axiosInstance";
 
 const userSchema = yup.object().shape({
   name: yup.string().required("Username is required"),
@@ -68,10 +64,8 @@ const AddUser = ({ onAddUser }) => {
     console.log(newUser);
 
     try {
-      const response = await axios.post(
-        "https://jsonplaceholder.typicode.com/users",
-        newUser
-      );
+      const response = await axiosInstance.post("/users", newUser);
+      console.log(response);
       onAddUser({ id: Date.now(), ...newUser });
       setOpen(false);
       reset();
